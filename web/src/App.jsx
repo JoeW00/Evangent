@@ -11,6 +11,7 @@ import HeroBanner from "./components/Home/HeroBanner";
 import TableOfContents from "./components/Home/TableOfContents";
 import ContinueReading from "./components/Home/ContinueReading";
 import ChapterReader from "./components/Reader/ChapterReader";
+import NotFound from "./components/Layout/NotFound";
 
 function HomePage() {
   return (
@@ -46,6 +47,7 @@ function AppShell() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/chapter/:chapterId" element={<ChapterReader fontSize={fontSize} />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <Footer />
