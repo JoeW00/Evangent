@@ -1,11 +1,53 @@
-import { HashRouter, Routes, Route } from "react-router";
+import { HashRouter, Routes, Route, useParams } from "react-router";
+import { useState } from "react";
+import Header from "./components/Layout/Header";
+import Footer from "./components/Layout/Footer";
+
+function HomePage() {
+  return <div className="p-8 text-center">Home — 目錄 coming soon</div>;
+}
+
+function ChapterPage() {
+  const { chapterId } = useParams();
+  return <div className="p-8">Chapter: {chapterId}</div>;
+}
 
 export default function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isDark, setIsDark] = useState(false);
+  const [fontSize, setFontSize] = useState(1);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  const handleToggleDark = () => {
+    setIsDark((d) => {
+      document.documentElement.classList.toggle("dark", !d);
+      return !d;
+    });
+  };
+
+  const handleFontSizeChange = (delta) => {
+    setFontSize((s) => Math.max(0, Math.min(2, s + delta)));
+  };
+
   return (
     <HashRouter>
-      <Routes>
-        <Route path="/" element={<div className="p-8 font-[--font-sans-ui] text-[--color-text-primary] bg-[--color-bg-page] min-h-screen">Evangent - 福音大翻譯計劃</div>} />
-      </Routes>
+      <div className="min-h-screen flex flex-col bg-[--color-bg-page] dark:bg-[--color-dark-bg-page] text-[--color-text-primary] dark:text-[--color-dark-text-primary]">
+        <Header
+          onToggleSidebar={() => setSidebarOpen((o) => !o)}
+          onToggleDarkMode={handleToggleDark}
+          isDark={isDark}
+          fontSize={fontSize}
+          onFontSizeChange={handleFontSizeChange}
+          onOpenSearch={() => setSearchOpen(true)}
+        />
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/chapter/:chapterId" element={<ChapterPage />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </HashRouter>
   );
 }
