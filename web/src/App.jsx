@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route } from "react-router";
 import { useState } from "react";
 import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
+import MobileSidebar from "./components/Layout/MobileSidebar";
 import HeroBanner from "./components/Home/HeroBanner";
 import TableOfContents from "./components/Home/TableOfContents";
 import ChapterReader from "./components/Reader/ChapterReader";
@@ -44,6 +45,7 @@ export default function App() {
           onFontSizeChange={handleFontSizeChange}
           onOpenSearch={() => setSearchOpen(true)}
         />
+        <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
