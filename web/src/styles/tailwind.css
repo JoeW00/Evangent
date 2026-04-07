@@ -3,7 +3,7 @@
 
 @theme {
   --color-primary: #4F6D7A;
-  --color-accent: #D4956A;
+  --color-accent: #B8845A;
   --color-highlight: #F0E6D3;
   --color-bg-page: #FAFAF7;
   --color-bg-content: #FFFFFF;
@@ -17,8 +17,8 @@
   --color-dark-bg-content: #232340;
   --color-dark-bg-en: #2A2A45;
   --color-dark-text-primary: #E8E8ED;
-  --color-dark-text-secondary: #9CA3AF;
-  --color-dark-text-muted: #6B7280;
+  --color-dark-text-secondary: #B0B8C4;
+  --color-dark-text-muted: #8B95A5;
   --color-dark-primary: #7BA7BC;
   --color-dark-accent: #E0A87C;
   --color-dark-highlight: #5C4A2E;

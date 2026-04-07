@@ -33,6 +33,12 @@ function AppShell() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[--color-bg-page] dark:bg-[--color-dark-bg-page] text-[--color-text-primary] dark:text-[--color-dark-text-primary]">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:min-h-[44px] focus:flex focus:items-center focus:rounded-lg focus:bg-[--color-primary] focus:text-white focus:font-[--font-sans-ui] focus:text-sm"
+      >
+        跳到主要內容
+      </a>
       <Header
         onToggleSidebar={() => setSidebarOpen((o) => !o)}
         onToggleDarkMode={toggleDark}
@@ -43,7 +49,7 @@ function AppShell() {
       />
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
       <SearchBar isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
-      <main className="flex-1 flex flex-col">
+      <main id="main-content" className="flex-1 flex flex-col">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/chapter/:chapterId" element={<ChapterReader fontSize={fontSize} />} />

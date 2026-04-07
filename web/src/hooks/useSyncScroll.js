@@ -4,25 +4,30 @@ export function useSyncScroll() {
   const leftRef = useRef(null);
   const rightRef = useRef(null);
   const isSyncing = useRef(false);
+  const rafId = useRef(null);
 
   const handleScroll = useCallback((source, target) => {
     if (isSyncing.current) return;
-    isSyncing.current = true;
 
-    const sourceEl = source.current;
-    const targetEl = target.current;
-    if (!sourceEl || !targetEl) {
-      isSyncing.current = false;
-      return;
-    }
+    if (rafId.current) cancelAnimationFrame(rafId.current);
+    rafId.current = requestAnimationFrame(() => {
+      isSyncing.current = true;
 
-    const maxScroll = sourceEl.scrollHeight - sourceEl.clientHeight;
-    const ratio = maxScroll > 0 ? sourceEl.scrollTop / maxScroll : 0;
-    const targetMax = targetEl.scrollHeight - targetEl.clientHeight;
-    targetEl.scrollTop = ratio * targetMax;
+      const sourceEl = source.current;
+      const targetEl = target.current;
+      if (!sourceEl || !targetEl) {
+        isSyncing.current = false;
+        return;
+      }
 
-    requestAnimationFrame(() => {
-      isSyncing.current = false;
+      const maxScroll = sourceEl.scrollHeight - sourceEl.clientHeight;
+      const ratio = maxScroll > 0 ? sourceEl.scrollTop / maxScroll : 0;
+      const targetMax = targetEl.scrollHeight - targetEl.clientHeight;
+      targetEl.scrollTop = ratio * targetMax;
+
+      requestAnimationFrame(() => {
+        isSyncing.current = false;
+      });
     });
   }, []);
 
@@ -40,6 +45,7 @@ export function useSyncScroll() {
     return () => {
       leftEl.removeEventListener("scroll", onLeftScroll);
       rightEl.removeEventListener("scroll", onRightScroll);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
     };
   }, [handleScroll]);
 

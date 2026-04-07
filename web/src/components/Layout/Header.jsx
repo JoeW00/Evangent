@@ -1,8 +1,10 @@
-import { Link, useParams } from "react-router";
+import { Link, useLocation } from "react-router";
 import { getChapter } from "../../data/chapters";
 
 export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, fontSize, onFontSizeChange, onOpenSearch }) {
-  const { chapterId } = useParams();
+  const location = useLocation();
+  const match = location.pathname.match(/^\/chapter\/(.+)/);
+  const chapterId = match ? match[1] : null;
   const chapter = chapterId ? getChapter(chapterId) : null;
 
   return (
@@ -12,10 +14,10 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
         <div className="flex items-center gap-3">
           <button
             onClick={onToggleSidebar}
-            className="lg:hidden p-2 rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
             aria-label="開啟目錄"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
@@ -30,18 +32,18 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
         </div>
 
         {/* Right: controls */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-0.5">
           {/* Font size */}
           <button
             onClick={() => onFontSizeChange(-1)}
-            className="p-2 text-sm rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-sm rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
             aria-label="縮小字型"
           >
             A-
           </button>
           <button
             onClick={() => onFontSizeChange(1)}
-            className="p-2 text-sm rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-sm rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
             aria-label="放大字型"
           >
             A+
@@ -50,10 +52,10 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
           {/* Search */}
           <button
             onClick={onOpenSearch}
-            className="p-2 rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
             aria-label="搜尋"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
@@ -61,7 +63,7 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
           {/* Dark mode */}
           <button
             onClick={onToggleDarkMode}
-            className="p-2 rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
             aria-label={isDark ? "切換亮色模式" : "切換深色模式"}
           >
             {isDark ? "\u2600\uFE0F" : "\uD83C\uDF19"}

@@ -10,7 +10,7 @@ export default function NotFound() {
         </p>
         <Link
           to="/"
-          className="inline-block mt-6 px-6 py-2 rounded-lg bg-[--color-primary] dark:bg-[--color-dark-primary] text-white font-[--font-sans-ui] text-sm hover:opacity-90 transition-opacity"
+          className="inline-block mt-6 px-6 py-2 rounded-lg bg-[--color-primary] dark:bg-[--color-dark-primary] text-[--color-bg-content] dark:text-[--color-dark-text-primary] font-[--font-sans-ui] text-sm hover:opacity-90 transition-opacity"
         >
           回到目錄
         </Link>

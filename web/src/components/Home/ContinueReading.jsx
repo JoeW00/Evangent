@@ -13,6 +13,7 @@ export default function ContinueReading() {
     <div className="max-w-2xl mx-auto px-4 mb-8">
       <Link
         to={`/chapter/${chapter.id}`}
+        aria-label={`繼續閱讀：${chapter.zh.title}，進度 ${Math.round(progress.scrollRatio * 100)}%`}
         className="block rounded-xl border border-[--color-border] dark:border-[--color-dark-text-muted] p-4 hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en] transition-colors"
       >
         <p className="text-xs font-[--font-sans-ui] text-[--color-text-muted] dark:text-[--color-dark-text-muted] mb-1">
@@ -24,7 +25,7 @@ export default function ContinueReading() {
         <p className="text-sm font-[--font-serif-en] text-[--color-text-secondary] dark:text-[--color-dark-text-secondary]">
           {chapter.en.title}
         </p>
-        <div className="mt-2 h-1 bg-[--color-bg-en] dark:bg-[--color-dark-bg-en] rounded-full overflow-hidden">
+        <div className="mt-2 h-1 bg-[--color-bg-en] dark:bg-[--color-dark-bg-en] rounded-full overflow-hidden" aria-hidden="true">
           <div
             className="h-full bg-[--color-accent] dark:bg-[--color-dark-accent] rounded-full"
             style={{ width: `${Math.round(progress.scrollRatio * 100)}%` }}

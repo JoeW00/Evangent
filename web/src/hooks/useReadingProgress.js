@@ -9,15 +9,23 @@ export function useReadingProgress(chapterId) {
   useEffect(() => {
     if (!chapterId) return;
 
+    let rafId = null;
     const handleScroll = () => {
-      const el = document.documentElement;
-      const maxScroll = el.scrollHeight - el.clientHeight;
-      const ratio = maxScroll > 0 ? el.scrollTop / maxScroll : 0;
-      setScrollRatio(ratio);
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        const el = document.documentElement;
+        const maxScroll = el.scrollHeight - el.clientHeight;
+        const ratio = maxScroll > 0 ? el.scrollTop / maxScroll : 0;
+        setScrollRatio(ratio);
+        rafId = null;
+      });
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [chapterId]);
 
   useEffect(() => {
