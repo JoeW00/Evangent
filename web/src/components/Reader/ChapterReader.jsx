@@ -1,12 +1,15 @@
 import { useParams } from "react-router";
 import { useChapterContent } from "../../hooks/useChapterContent";
+import { useReadingProgress } from "../../hooks/useReadingProgress";
 import BilingualPane from "./BilingualPane";
 import MobileReader from "./MobileReader";
 import ChapterNav from "./ChapterNav";
+import ReadingProgressBar from "./ReadingProgressBar";
 
 export default function ChapterReader({ fontSize }) {
   const { chapterId } = useParams();
   const { content, loading, error } = useChapterContent(chapterId);
+  const { scrollRatio } = useReadingProgress(chapterId);
 
   if (loading) {
     return (
@@ -33,6 +36,7 @@ export default function ChapterReader({ fontSize }) {
 
   return (
     <div className="flex flex-col flex-1 min-h-0">
+      <ReadingProgressBar ratio={scrollRatio} />
       {/* Desktop: bilingual pane */}
       <div className="hidden lg:flex flex-1 min-h-0">
         <BilingualPane zhContent={content.zh} enContent={content.en} fontSize={fontSize} />

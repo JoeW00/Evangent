@@ -9,12 +9,14 @@ import MobileSidebar from "./components/Layout/MobileSidebar";
 import SearchBar from "./components/Search/SearchBar";
 import HeroBanner from "./components/Home/HeroBanner";
 import TableOfContents from "./components/Home/TableOfContents";
+import ContinueReading from "./components/Home/ContinueReading";
 import ChapterReader from "./components/Reader/ChapterReader";
 
 function HomePage() {
   return (
     <>
       <HeroBanner />
+      <ContinueReading />
       <TableOfContents />
     </>
   );
