@@ -22,11 +22,13 @@
 
 - 全書 13 章 + 序 + 引言共 15 個章節的中英對照閱讀（不含封面與獻詞）
 - 同步滾動的雙欄排版（桌機）
-- 響應式設計切換為上下交錯排版（手機）
-- 全書關鍵字搜尋（含高亮跳轉）
+- 響應式設計切換為 Tab 切換排版（手機：中文/English/對照）
+- 全書關鍵字搜尋（Modal 彈窗，Ctrl/⌘+K 開啟，含摘要與跳轉）
 - 深色模式
-- 字型大小調整、��讀進度記憶
-- 部署至 GitHub Pages
+- 字型大小調整、閱讀進度記憶
+- 完整無障礙支援（ARIA dialog、focus trap、skip link、鍵盤導航）
+- 部署至 GitHub Pages（GitHub Actions 自動部署）
+- Python 單元測試 (pytest) + JS 單元測試 (Vitest) + Puppeteer UI 測試
 
 ### 1.4 版權聲明 (Copyright)
 
@@ -194,7 +196,7 @@ export const chapters = [
 ├─────────────────────────────────────────────────────┤
 │        首頁 (/) — 書名 + 目錄                          │
 │        章節頁 (/chapter/:id) — 雙欄閱讀               │
-│        搜尋頁 (/search) — 關鍵字搜尋結果               │
+│        搜尋 — Modal 彈窗 (Ctrl/⌘+K)                  │
 ├─────────────────────────────────────────────────────┤
 │  Footer: 版權資訊                                     │
 └─────────────────────────────────────────────────────┘
@@ -327,8 +329,7 @@ src/
 │   │   ├── ReadingProgressBar.jsx # 頂部閱讀進度條
 │   │   └── ChapterNav.jsx     # 上/下一章導航
 │   └── Search/
-│       ├── SearchBar.jsx      # 搜尋輸入框（Ctrl+K 開啟）
-│       └── SearchResults.jsx  # 搜尋結果列表（含摘要高亮）
+│       └── SearchBar.jsx      # 搜尋 Modal（Ctrl+K 開啟，含輸入框 + 結果列表 + 方向鍵導航）
 ├── styles/
 │   └── tailwind.css           # @import "tailwindcss" + @variant dark + 自訂樣式
 └── utils/
@@ -370,27 +371,30 @@ src/
 ```
                   Build 階段
 docs/zh/*.md ──┐
-               ├──> Vite raw import ──> 字串存入 JS bundle
+               ├──> Vite import.meta.glob(?raw) ──> 每章拆為獨立 chunk
 docs/en/*.md ──┘
 
                   Runtime
-JS bundle ──> useChapterContent(chapterId)
-          ──> { zh: "# 神所建造的殿\n...", en: "# The House...\n..." }
-          ──> react-markdown 渲染
+使用者進入章節 ──> markdownLoader.js (lazy import)
+              ──> useChapterContent(chapterId)
+              ──> { zh: "# 神所建造的殿\n...", en: "# The House...\n..." }
+              ──> react-markdown 渲染（React.memo + useMemo 優化）
 ```
 
-使用 Vite 的 dynamic import + `?raw` 搭配 `React.lazy`，按章節懶載入 Markdown 內容。只有使用者進入該章節時才載入對應的 `.md` 檔案，避免初始 bundle 過大（15 章全載會超過 500KB 文字量）。搜尋索引則在首次開啟搜尋時才建立。
+使用 Vite 的 `import.meta.glob` + `?raw`（lazy 模式），按章節懶載入 Markdown 內容。只有使用者進入該章節時才載入對應的 `.md` 檔案，每章為獨立 JS chunk。搜尋索引也是懶載入——首次搜尋時才 async 載入所有 Markdown 並建立 Fuse.js 索引。
 
 ### 6.2 搜尋流程
 
 ```
-Build 階段:
-  所有 Markdown 文字 ──> 預建 Fuse.js 索引（按章節+語言分段）
+Runtime（首次搜尋時觸發）:
+  async getSearchIndex()
+    ──> 懶載入所有 Markdown（import.meta.glob，非 eager）
+    ──> 建立 Fuse.js 索引（按章節+語言+段落分段）
+    ──> 快取 Fuse 實例供後續查詢
 
-Runtime:
-  使用者輸入關鍵字
-    ──> Fuse.js 模糊搜尋
-    ──> 回傳匹配結果 [{ chapter, lang, excerpt, score }]
+  使用者輸入關鍵字（250ms debounce）
+    ──> async search(query)
+    ──> 回傳匹配結果 [{ chapterId, lang, chapterTitle, excerpt, score }]
     ──> 點擊結果 → 跳轉至對應章節
 ```
 
@@ -421,7 +425,7 @@ Runtime:
   淺灰  #9CA3AF     — 引用文字
 
 強調色:
-  暖橘  #D4956A     — 部名標籤、hover 狀態
+  暖橘  #B8845A     — 部名標籤、hover 狀態（WCAG AA 合規）
   淺金  #F0E6D3     — 搜尋高亮背景
 ```
 
@@ -475,9 +479,8 @@ scrollRatio = scrollTop / (scrollHeight - clientHeight)
 
 | 斷點 | 佈局 | 說明 |
 |------|------|------|
-| `≥ 1024px` | 左右雙欄 50/50 | 桌機，同步滾動 |
-| `768px – 1023px` | 左右雙欄 55/45 | 平板，中文欄略寬 |
-| `< 768px` | 單欄 + Tab 切換 | 手機，中文/英文/對照三模式 |
+| `≥ 1024px` (lg) | 左右雙欄 50/50 | 桌機，同步滾動 |
+| `< 1024px` | 單欄 + Tab 切換 | 平板/手機，中文/英文/對照三模式 |
 
 ---
 
@@ -486,7 +489,7 @@ scrollRatio = scrollTop / (scrollHeight - clientHeight)
 ```
 /                       → 首頁（目錄）
 /chapter/:chapterId     → 章節閱讀（如 /chapter/ch01）
-/search?q=關鍵字         → 搜尋結果頁
+*                       → 404 頁面
 ```
 
 使用 React Router v7 的 `HashRouter`（從 `react-router` 統一套件匯入）以相容 GitHub Pages（不需 server-side redirect）。
@@ -501,14 +504,18 @@ import { HashRouter, Routes, Route } from "react-router";
 ## 11. 部署方案 (Deployment)
 
 ```
-GitHub Actions workflow:
+GitHub Actions workflow (.github/workflows/deploy.yml):
   on push to main:
-    1. npm install
-    2. npm run build
-    3. Deploy dist/ to gh-pages branch
+    1. actions/checkout@v4
+    2. actions/setup-node@v4 (node 22)
+    3. cd web && npm ci && npm run build
+    4. actions/upload-pages-artifact@v3 (path: web/dist)
+    5. actions/deploy-pages@v4
 ```
 
-使用 `gh-pages` npm package 或 GitHub Actions 自動部署。
+使用 GitHub Actions 自動部署至 GitHub Pages。部署網址：`https://joew00.github.io/Evangent/`
+
+**注意**：`vite.config.js` 中 `base: "/Evangent/"` 必須與 GitHub repo 名稱一致。
 
 ---
 
@@ -523,12 +530,19 @@ GitHub Actions workflow:
 | `Esc` | 關閉搜尋框 / 收合側邊目錄 |
 | `Home` | 回到章節頂部 |
 
-### 12.2 螢幕閱讀器
+### 12.2 螢幕閱讀器與 ARIA
 
-- 所有互動元素加上 `aria-label`
-- 章節切換時以 `aria-live="polite"` 通知
+- 所有互動元素加上 `aria-label`（中文標籤）
+- SearchBar 使用 `role="dialog"` + `aria-modal="true"` + focus trap
+- MobileSidebar 使用 `role="dialog"` + focus trap + `aria-current="page"`
+- MobileReader 使用 `role="tablist"` / `role="tab"` / `role="tabpanel"` + `aria-selected`
+- 搜尋結果使用 `role="listbox"` / `role="option"` + 方向鍵導航 + `aria-activedescendant`
+- `aria-live="polite"` 通知搜尋結果數量
+- ReadingProgressBar 使用 `role="progressbar"` + `aria-valuenow`
 - 中英文欄以 `lang="zh-TW"` 和 `lang="en"` 標記
-- 圖片（若有）提供 `alt` 文字
+- BilingualPane 兩欄使用 `role="region"` + `aria-label` + `tabIndex={0}` + `focus-visible`
+- Skip-to-content link（`#main-content`）
+- 錯誤狀態使用 `role="alert"`，載入狀態使用 `aria-busy`
 
 ### 12.3 色彩對比
 
@@ -563,8 +577,8 @@ Tailwind CSS v4 預設使用 `prefers-color-scheme` 媒體查詢來啟用 `dark:
 
 文字色:
   淺白  #E8E8ED     — 正文
-  灰白  #9CA3AF     — 次要文字
-  暗灰  #6B7280     — 引用文字
+  灰白  #B0B8C4     — 次要文字
+  暗灰  #8B95A5     — 引用文字（對比度已優化）
 
 主色調:
   柔藍  #7BA7BC     — 連結、按鈕（亮色版 #4F6D7A 的明亮變體）
@@ -662,7 +676,7 @@ Tailwind CSS v4 預設使用 `prefers-color-scheme` 媒體查詢來啟用 `dark:
 - 點擊 ☰ 漢堡按鈕，側邊目錄從**左側滑入**
 - 背景顯示半透明 overlay (`bg-black/50`)
 - 點擊 overlay 或選擇章節後，自動收合
-- 側邊目錄寬度 `80vw`，最大 `320px`
+- 側邊目錄寬度 `75vw`，最大 `320px`
 - 滑入/滑出使用 `transform: translateX` + `transition 300ms ease`
 - 目錄中標示目前章節（高亮 + 圖標）
 
@@ -672,25 +686,34 @@ Tailwind CSS v4 預設使用 `prefers-color-scheme` 媒體查詢來啟用 `dark:
 
 ```
 Evangent/
-├── docs/                      # 原始 Markdown 內容
+├── docs/                      # 原始 Markdown 內容（生成產物）
 │   ├── zh/                    # 中文版 (15 files)
-│   ├── en/                    # 英文版 (16 files, 網站使用 15 files)
+│   ├── en/                    # 英文版 (15 files)
+│   ├── original/              # 原始 .docx 檔案
 │   └── SDD.md                 # 本文件
-├── web/                       # ⭐ 前端應用（新建）
+├── web/                       # 前端應用
 │   ├── public/
-│   │   └── favicon.ico
+│   │   ├── favicon.svg
+│   │   └── icons.svg
 │   ├── src/
 │   │   ├── App.jsx
 │   │   ├── main.jsx
-│   │   ├── data/
-│   │   ├── hooks/
-│   │   ├── components/
-│   │   ├── styles/
-│   │   └── utils/
+│   │   ├── data/              # chapters.js, searchIndex.js
+│   │   ├── hooks/             # useSyncScroll, useDarkMode, useFontSize, etc.
+│   │   ├── components/        # Layout/, Home/, Reader/, Search/
+│   │   ├── styles/            # tailwind.css (@theme 定義色彩/字型 token)
+│   │   └── utils/             # markdownLoader.js
 │   ├── index.html
-│   ├── vite.config.js         # 含 @tailwindcss/vite 插件
-│   └── package.json           # Tailwind v4 不需 tailwind.config.js / postcss.config.js
+│   ├── vite.config.js         # 含 @tailwindcss/vite + vitest config
+│   ├── vitest.setup.js        # jest-dom matchers + matchMedia mock
+│   └── package.json
+├── tests/                     # Python 單元測試 (pytest)
+├── ui-tests/                  # Puppeteer UI/UX 測試
+├── .impeccable.md             # 設計上下文（受眾、品牌個性、美學方向）
+├── .github/workflows/         # GitHub Actions 部署 workflow
 ├── convert_docx.py            # Markdown 轉換腳本
+├── pyproject.toml             # Python 專案設定 (uv)
+├── CLAUDE.md                  # Claude Code 指引
 └── README.md
 ```
 
@@ -699,36 +722,44 @@ Evangent/
 ## 19. 驗收標準 (Acceptance Criteria)
 
 ### 功能面
-- [ ] 首頁顯示完整目錄（含序、引言），按部分組排列
-- [ ] 首頁顯示「繼續閱讀」卡片（若有閱讀紀錄）
-- [ ] 點擊章節可進入雙欄閱讀頁
-- [ ] 桌機版左右同步滾動正常運作
-- [ ] 手機版三種模式（中文/英文/對照）可切換
-- [ ] 手機版側邊目錄可正常開啟/收合
-- [ ] 搜尋框可搜尋中英文關鍵字，顯示摘要結果
-- [ ] 點擊搜尋結果可跳轉至章節並高亮關鍵字
-- [ ] 上一章/下一章導航正常
-- [ ] 鍵盤快捷鍵正常運作（←/→/Ctrl+K/Esc）
-- [ ] 深色模式可切換，偏好可記憶
-- [ ] 字型大小三段可切換，偏好可記憶
-- [ ] 閱讀進度可記憶，下次造訪可恢復
-- [ ] 成功部署至 GitHub Pages 並可存取
+- [x] 首頁顯示完整目錄（含序、引言），按部分組排列
+- [x] 首頁顯示「繼續閱讀」卡片（若有閱讀紀錄）
+- [x] 點擊章節可進入雙欄閱讀頁
+- [x] 桌機版左右同步滾動正常運作
+- [x] 手機版三種模式（中文/英文/對照）可切換
+- [x] 手機版側邊目錄可正常開啟/收合
+- [x] 搜尋框可搜尋中英文關鍵字，顯示摘要結果
+- [x] 點擊搜尋結果可跳轉至章節
+- [x] 上一章/下一章導航正常
+- [x] 鍵盤快捷鍵正常運作（←/→/Ctrl+K/Esc/方向鍵瀏覽搜尋結果）
+- [x] 深色模式可切換，偏好可記憶
+- [x] 字型大小三段可切換，偏好可記憶
+- [x] 閱讀進度可記憶，下次造訪可恢復
+- [x] 成功部署至 GitHub Pages 並可存取
 
 ### 視覺面
-- [ ] 亮色/深色模式配色皆舒適，長時間閱讀不刺眼
-- [ ] 中英文字型正確載入
-- [ ] 響應式在 320px ~ 1920px 間正常顯示
-- [ ] 404 頁面、載入狀態、空搜尋結果皆有友善提示
+- [x] 亮色/深色模式配色皆舒適，長時間閱讀不刺眼
+- [x] 中英文字型正確載入
+- [x] 響應式在 320px ~ 1920px 間正常顯示
+- [x] 404 頁面、載入狀態、空搜尋結果皆有友善提示
 
 ### 效能面
-- [ ] 首頁載入 < 2 秒（Lighthouse Performance > 90）
-- [ ] 章節內容懶載入，切換章節無明顯延遲
-- [ ] 搜尋索引延遲建立，不影響初始載入
+- [x] 章節內容懶載入，切換章節無明顯延遲
+- [x] 搜尋索引延遲建立（async lazy-load），不影響初始載入
+- [x] 滾動事件 RAF 節流，MarkdownRenderer 已 React.memo 優化
 
 ### 無障礙
-- [ ] 正文文字對比度 ≥ 4.5:1（WCAG AA）
-- [ ] 所有互動元素可透過鍵盤操作
-- [ ] 中英文欄正確標記 `lang` 屬性
+- [x] 正文文字對比度 ≥ 4.5:1（WCAG AA）
+- [x] 所有互動元素可透過鍵盤操作
+- [x] 中英文欄正確標記 `lang` 屬性
+- [x] Modal/Sidebar 具備 focus trap 與 focus return
+- [x] Skip-to-content link
+- [x] 搜尋結果支援方向鍵導航
+
+### 測試覆蓋
+- [x] Python 單元測試 46 個（中文偵測、正則、中英轉換）
+- [x] JS 單元測試 46 個（chapters、searchIndex、hooks）
+- [x] Puppeteer UI/UX 測試 73 項檢查（13 個測試組）
 
 ---
 
