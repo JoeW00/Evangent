@@ -23,7 +23,7 @@ export default function ChapterReader({ fontSize }) {
       <div className="flex-1 flex items-center justify-center" aria-busy="true" aria-label="載入中">
         <div className="space-y-4 w-full max-w-3xl px-8">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="h-4 bg-[--color-bg-en] dark:bg-[--color-dark-bg-en] rounded animate-pulse" style={{ width: `${70 + Math.random() * 30}%` }} />
+            <div key={i} className="h-4 bg-[var(--color-bg-en)] dark:bg-[var(--color-dark-bg-en)] rounded animate-pulse" style={{ width: `${70 + Math.random() * 30}%` }} />
           ))}
         </div>
       </div>
@@ -34,8 +34,8 @@ export default function ChapterReader({ fontSize }) {
     return (
       <div className="flex-1 flex items-center justify-center text-center p-8" role="alert">
         <div>
-          <p className="text-lg text-[--color-text-secondary] dark:text-[--color-dark-text-secondary]">無法載入章節內容</p>
-          <p className="text-sm text-[--color-text-muted] dark:text-[--color-dark-text-muted] mt-2">{error}</p>
+          <p className="text-lg text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text-secondary)]">無法載入章節內容</p>
+          <p className="text-sm text-[var(--color-text-muted)] dark:text-[var(--color-dark-text-muted)] mt-2">{error}</p>
         </div>
       </div>
     );

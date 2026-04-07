@@ -15,23 +15,23 @@ export default function TableOfContents() {
           return (
             <div key={ch.id}>
               {showPart && (
-                <div className="mt-8 mb-3 pt-4 border-t border-[--color-border] dark:border-[--color-dark-text-muted]">
-                  <h3 className="text-sm font-semibold text-[--color-accent] dark:text-[--color-dark-accent] font-[--font-sans-ui]">
+                <div className="mt-8 mb-3 pt-4 border-t border-[var(--color-border)] dark:border-[var(--color-dark-text-muted)]">
+                  <h3 className="text-sm font-semibold text-[var(--color-accent)] dark:text-[var(--color-dark-accent)] font-[var(--font-sans-ui)]">
                     {ch.part.zh}
                   </h3>
-                  <p className="text-xs text-[--color-text-muted] dark:text-[--color-dark-text-muted] font-[--font-sans-ui]">
+                  <p className="text-xs text-[var(--color-text-muted)] dark:text-[var(--color-dark-text-muted)] font-[var(--font-sans-ui)]">
                     {ch.part.en}
                   </p>
                 </div>
               )}
               <Link
                 to={`/chapter/${ch.id}`}
-                className="block rounded-lg px-4 py-3 hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en] transition-colors"
+                className="block rounded-lg px-4 py-3 hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)] transition-colors"
               >
-                <p className="font-[--font-serif-zh] text-[--color-text-primary] dark:text-[--color-dark-text-primary]">
+                <p className="font-[var(--font-serif-zh)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)]">
                   {ch.zh.title}
                 </p>
-                <p className="text-sm font-[--font-serif-en] text-[--color-text-secondary] dark:text-[--color-dark-text-secondary]">
+                <p className="text-sm font-[var(--font-serif-en)] text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text-secondary)]">
                   {ch.en.title}
                 </p>
               </Link>

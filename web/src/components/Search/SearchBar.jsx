@@ -118,12 +118,12 @@ export default function SearchBar({ isOpen, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-label="搜尋"
-        className="relative w-full max-w-lg mx-4 sm:mx-auto bg-[--color-bg-content] dark:bg-[--color-dark-bg-content] rounded-xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-lg mx-4 sm:mx-auto bg-[var(--color-bg-content)] dark:bg-[var(--color-dark-bg-content)] rounded-xl shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Input */}
-        <div className="flex items-center px-4 border-b border-[--color-border] dark:border-[--color-dark-text-muted]">
-          <svg className="w-5 h-5 text-[--color-text-muted] dark:text-[--color-dark-text-muted] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+        <div className="flex items-center px-4 border-b border-[var(--color-border)] dark:border-[var(--color-dark-text-muted)]">
+          <svg className="w-5 h-5 text-[var(--color-text-muted)] dark:text-[var(--color-dark-text-muted)] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
@@ -134,9 +134,9 @@ export default function SearchBar({ isOpen, onClose }) {
             placeholder="搜尋全書..."
             aria-label="輸入搜尋關鍵字"
             aria-activedescendant={activeIndex >= 0 ? `search-result-${activeIndex}` : undefined}
-            className="flex-1 px-3 py-4 bg-transparent outline-none font-[--font-sans-ui] text-[--color-text-primary] dark:text-[--color-dark-text-primary] placeholder:text-[--color-text-muted] dark:placeholder:text-[--color-dark-text-muted]"
+            className="flex-1 px-3 py-4 bg-transparent outline-none font-[var(--font-sans-ui)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)] placeholder:text-[var(--color-text-muted)] dark:placeholder:text-[var(--color-dark-text-muted)]"
           />
-          <kbd className="text-xs text-[--color-text-muted] dark:text-[--color-dark-text-muted] border border-[--color-border] dark:border-[--color-dark-text-muted] rounded px-1.5 py-0.5">
+          <kbd className="text-xs text-[var(--color-text-muted)] dark:text-[var(--color-dark-text-muted)] border border-[var(--color-border)] dark:border-[var(--color-dark-text-muted)] rounded px-1.5 py-0.5">
             ESC
           </kbd>
         </div>
@@ -158,14 +158,14 @@ export default function SearchBar({ isOpen, onClose }) {
                 role="option"
                 aria-selected={activeIndex === i}
                 onClick={() => handleSelect(r)}
-                className={`w-full text-left px-3 py-3 rounded-lg hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en] focus-visible:outline-2 focus-visible:outline-[--color-primary] dark:focus-visible:outline-[--color-dark-primary] transition-colors ${
-                  activeIndex === i ? "bg-[--color-bg-en] dark:bg-[--color-dark-bg-en]" : ""
+                className={`w-full text-left px-3 py-3 rounded-lg hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)] focus-visible:outline-2 focus-visible:outline-[var(--color-primary)] dark:focus-visible:outline-[var(--color-dark-primary)] transition-colors ${
+                  activeIndex === i ? "bg-[var(--color-bg-en)] dark:bg-[var(--color-dark-bg-en)]" : ""
                 }`}
               >
-                <p className="text-sm font-medium font-[--font-sans-ui] text-[--color-primary] dark:text-[--color-dark-primary]">
+                <p className="text-sm font-medium font-[var(--font-sans-ui)] text-[var(--color-primary)] dark:text-[var(--color-dark-primary)]">
                   {r.chapterTitle}
                 </p>
-                <p className="text-xs text-[--color-text-secondary] dark:text-[--color-dark-text-secondary] mt-0.5 line-clamp-2">
+                <p className="text-xs text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text-secondary)] mt-0.5 line-clamp-2">
                   {r.excerpt}
                 </p>
               </button>
@@ -174,7 +174,7 @@ export default function SearchBar({ isOpen, onClose }) {
         )}
 
         {query.length >= 2 && results.length === 0 && (
-          <div className="p-6 text-center text-sm text-[--color-text-muted] dark:text-[--color-dark-text-muted] font-[--font-sans-ui]">
+          <div className="p-6 text-center text-sm text-[var(--color-text-muted)] dark:text-[var(--color-dark-text-muted)] font-[var(--font-sans-ui)]">
             沒有找到符合的結果，試試其他關鍵字？
           </div>
         )}

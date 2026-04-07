@@ -32,10 +32,10 @@ function AppShell() {
   useKeyboardNav({ onOpenSearch: () => setSearchOpen(true) });
 
   return (
-    <div className="min-h-screen flex flex-col bg-[--color-bg-page] dark:bg-[--color-dark-bg-page] text-[--color-text-primary] dark:text-[--color-dark-text-primary]">
+    <div className="min-h-screen flex flex-col bg-[var(--color-bg-page)] dark:bg-[var(--color-dark-bg-page)] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)]">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:min-h-[44px] focus:flex focus:items-center focus:rounded-lg focus:bg-[--color-primary] focus:text-white focus:font-[--font-sans-ui] focus:text-sm"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:px-4 focus:py-2 focus:min-h-[44px] focus:flex focus:items-center focus:rounded-lg focus:bg-[var(--color-primary)] focus:text-white focus:font-[var(--font-sans-ui)] focus:text-sm"
       >
         跳到主要內容
       </a>

@@ -8,10 +8,10 @@ export default function ReadingProgressBar({ ratio }) {
       aria-valuemin={0}
       aria-valuemax={100}
       aria-label="閱讀進度"
-      className="sticky top-14 z-30 h-0.5 bg-[--color-bg-en] dark:bg-[--color-dark-bg-en]"
+      className="sticky top-14 z-30 h-0.5 bg-[var(--color-bg-en)] dark:bg-[var(--color-dark-bg-en)]"
     >
       <div
-        className="h-full bg-[--color-primary] dark:bg-[--color-dark-primary] transition-[width] duration-150 will-change-[width]"
+        className="h-full bg-[var(--color-primary)] dark:bg-[var(--color-dark-primary)] transition-[width] duration-150 will-change-[width]"
         style={{ width: `${percent}%` }}
       />
     </div>

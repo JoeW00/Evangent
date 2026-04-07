@@ -8,13 +8,13 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
   const chapter = chapterId ? getChapter(chapterId) : null;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[--color-border] dark:border-[--color-dark-text-muted] bg-[--color-bg-content] dark:bg-[--color-dark-bg-content] font-[--font-sans-ui]">
+    <header className="sticky top-0 z-40 border-b border-[var(--color-border)] dark:border-[var(--color-dark-text-muted)] bg-[var(--color-bg-content)] dark:bg-[var(--color-dark-bg-content)] font-[var(--font-sans-ui)]">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
         {/* Left: hamburger + title */}
         <div className="flex items-center gap-3">
           <button
             onClick={onToggleSidebar}
-            className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="lg:hidden min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)]"
             aria-label="開啟目錄"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -23,7 +23,7 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
           </button>
           <Link
             to="/"
-            className="text-[--color-primary] dark:text-[--color-dark-primary] font-semibold text-sm truncate"
+            className="text-[var(--color-primary)] dark:text-[var(--color-dark-primary)] font-semibold text-sm truncate"
           >
             {chapter
               ? `《孩子的屬靈覺醒》${chapter.zh.title}`
@@ -36,14 +36,14 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
           {/* Font size */}
           <button
             onClick={() => onFontSizeChange(-1)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-sm rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-sm rounded-md hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)]"
             aria-label="縮小字型"
           >
             A-
           </button>
           <button
             onClick={() => onFontSizeChange(1)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-sm rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center text-sm rounded-md hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)]"
             aria-label="放大字型"
           >
             A+
@@ -52,7 +52,7 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
           {/* Search */}
           <button
             onClick={onOpenSearch}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)]"
             aria-label="搜尋"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -63,7 +63,7 @@ export default function Header({ onToggleSidebar, onToggleDarkMode, isDark, font
           {/* Dark mode */}
           <button
             onClick={onToggleDarkMode}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-md hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)]"
             aria-label={isDark ? "切換亮色模式" : "切換深色模式"}
           >
             {isDark ? "\u2600\uFE0F" : "\uD83C\uDF19"}

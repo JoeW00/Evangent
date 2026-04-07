@@ -15,33 +15,33 @@ export default memo(function MarkdownRenderer({ content, lang = "zh", fontSize =
 
   const components = useMemo(() => ({
     blockquote: ({ children }) => (
-      <blockquote className="border-l-[3px] border-[--color-accent] dark:border-[--color-dark-accent] bg-[--color-bg-en] dark:bg-[--color-dark-bg-en] pl-4 py-2 my-4 text-[--color-text-secondary] dark:text-[--color-dark-text-secondary] italic">
+      <blockquote className="border-l-[3px] border-[var(--color-accent)] dark:border-[var(--color-dark-accent)] bg-[var(--color-bg-en)] dark:bg-[var(--color-dark-bg-en)] pl-4 py-2 my-4 text-[var(--color-text-secondary)] dark:text-[var(--color-dark-text-secondary)] italic">
         {children}
       </blockquote>
     ),
     h1: ({ children }) => (
-      <h1 className="text-2xl font-bold mt-8 mb-4 text-[--color-primary] dark:text-[--color-dark-primary]">
+      <h1 className="text-2xl font-bold mt-8 mb-4 text-[var(--color-primary)] dark:text-[var(--color-dark-primary)]">
         {children}
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-xl font-semibold mt-8 mb-3 text-[--color-text-primary] dark:text-[--color-dark-text-primary]">
+      <h2 className="text-xl font-semibold mt-8 mb-3 text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)]">
         {children}
       </h2>
     ),
     p: ({ children }) => (
-      <p className="mb-[1.5em] text-[--color-text-primary] dark:text-[--color-dark-text-primary]">{children}</p>
+      <p className="mb-[1.5em] text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)]">{children}</p>
     ),
     a: ({ children, href }) => (
-      <a href={href} className="text-[--color-primary] dark:text-[--color-dark-primary] underline hover:opacity-80">
+      <a href={href} className="text-[var(--color-primary)] dark:text-[var(--color-dark-primary)] underline hover:opacity-80">
         {children}
       </a>
     ),
     strong: ({ children }) => (
-      <strong className="font-bold text-[--color-text-primary] dark:text-[--color-dark-text-primary]">{children}</strong>
+      <strong className="font-bold text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)]">{children}</strong>
     ),
     em: ({ children }) => (
-      <em className="italic text-[--color-text-primary] dark:text-[--color-dark-text-primary]">{children}</em>
+      <em className="italic text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)]">{children}</em>
     ),
   }), []);
 

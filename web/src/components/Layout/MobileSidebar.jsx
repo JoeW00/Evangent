@@ -67,12 +67,12 @@ export default function MobileSidebar({ isOpen, onClose }) {
         aria-modal={isOpen ? "true" : undefined}
         aria-label="目錄導航"
         tabIndex={-1}
-        className={`fixed top-0 left-0 h-full w-[75vw] max-w-[320px] z-50 bg-[--color-bg-content] dark:bg-[--color-dark-bg-content] shadow-xl transform transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto ${
+        className={`fixed top-0 left-0 h-full w-[75vw] max-w-[320px] z-50 bg-[var(--color-bg-content)] dark:bg-[var(--color-dark-bg-content)] shadow-xl transform transition-transform duration-300 ease-in-out lg:hidden overflow-y-auto ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="p-4 border-b border-[--color-border] dark:border-[--color-dark-text-muted]">
-          <h2 className="font-semibold font-[--font-sans-ui] text-[--color-primary] dark:text-[--color-dark-primary]">
+        <div className="p-4 border-b border-[var(--color-border)] dark:border-[var(--color-dark-text-muted)]">
+          <h2 className="font-semibold font-[var(--font-sans-ui)] text-[var(--color-primary)] dark:text-[var(--color-dark-primary)]">
             目錄
           </h2>
         </div>
@@ -85,7 +85,7 @@ export default function MobileSidebar({ isOpen, onClose }) {
             return (
               <div key={ch.id}>
                 {showPart && (
-                  <p className="px-3 pt-4 pb-1 text-xs font-semibold text-[--color-accent] dark:text-[--color-dark-accent] font-[--font-sans-ui]">
+                  <p className="px-3 pt-4 pb-1 text-xs font-semibold text-[var(--color-accent)] dark:text-[var(--color-dark-accent)] font-[var(--font-sans-ui)]">
                     {ch.part.zh}
                   </p>
                 )}
@@ -93,10 +93,10 @@ export default function MobileSidebar({ isOpen, onClose }) {
                   to={`/chapter/${ch.id}`}
                   onClick={onClose}
                   aria-current={isActive ? "page" : undefined}
-                  className={`block px-3 py-2 rounded-md text-sm font-[--font-sans-ui] transition-colors ${
+                  className={`block px-3 py-2 rounded-md text-sm font-[var(--font-sans-ui)] transition-colors ${
                     isActive
-                      ? "bg-[--color-bg-en] dark:bg-[--color-dark-bg-en] text-[--color-primary] dark:text-[--color-dark-primary] font-medium"
-                      : "text-[--color-text-primary] dark:text-[--color-dark-text-primary] hover:bg-[--color-bg-en] dark:hover:bg-[--color-dark-bg-en]"
+                      ? "bg-[var(--color-bg-en)] dark:bg-[var(--color-dark-bg-en)] text-[var(--color-primary)] dark:text-[var(--color-dark-primary)] font-medium"
+                      : "text-[var(--color-text-primary)] dark:text-[var(--color-dark-text-primary)] hover:bg-[var(--color-bg-en)] dark:hover:bg-[var(--color-dark-bg-en)]"
                   }`}
                 >
                   {ch.zh.title}
