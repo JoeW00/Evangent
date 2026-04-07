@@ -1,9 +1,10 @@
-import { HashRouter, Routes, Route, useParams } from "react-router";
+import { HashRouter, Routes, Route } from "react-router";
 import { useState } from "react";
 import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 import HeroBanner from "./components/Home/HeroBanner";
 import TableOfContents from "./components/Home/TableOfContents";
+import ChapterReader from "./components/Reader/ChapterReader";
 
 function HomePage() {
   return (
@@ -14,10 +15,6 @@ function HomePage() {
   );
 }
 
-function ChapterPage() {
-  const { chapterId } = useParams();
-  return <div className="p-8">Chapter: {chapterId}</div>;
-}
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -50,7 +47,7 @@ export default function App() {
         <main className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/chapter/:chapterId" element={<ChapterPage />} />
+            <Route path="/chapter/:chapterId" element={<ChapterReader fontSize={fontSize} />} />
           </Routes>
         </main>
         <Footer />
