@@ -1,6 +1,8 @@
 import { HashRouter, Routes, Route } from "react-router";
 import { useState } from "react";
 import Header from "./components/Layout/Header";
+import { useDarkMode } from "./hooks/useDarkMode";
+import { useFontSize } from "./hooks/useFontSize";
 import Footer from "./components/Layout/Footer";
 import MobileSidebar from "./components/Layout/MobileSidebar";
 import HeroBanner from "./components/Home/HeroBanner";
@@ -19,30 +21,19 @@ function HomePage() {
 
 export default function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [isDark, setIsDark] = useState(false);
-  const [fontSize, setFontSize] = useState(1);
   const [searchOpen, setSearchOpen] = useState(false);
-
-  const handleToggleDark = () => {
-    setIsDark((d) => {
-      document.documentElement.classList.toggle("dark", !d);
-      return !d;
-    });
-  };
-
-  const handleFontSizeChange = (delta) => {
-    setFontSize((s) => Math.max(0, Math.min(2, s + delta)));
-  };
+  const { isDark, toggle: toggleDark } = useDarkMode();
+  const { fontSize, changeFontSize } = useFontSize();
 
   return (
     <HashRouter>
       <div className="min-h-screen flex flex-col bg-[--color-bg-page] dark:bg-[--color-dark-bg-page] text-[--color-text-primary] dark:text-[--color-dark-text-primary]">
         <Header
           onToggleSidebar={() => setSidebarOpen((o) => !o)}
-          onToggleDarkMode={handleToggleDark}
+          onToggleDarkMode={toggleDark}
           isDark={isDark}
           fontSize={fontSize}
-          onFontSizeChange={handleFontSizeChange}
+          onFontSizeChange={changeFontSize}
           onOpenSearch={() => setSearchOpen(true)}
         />
         <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
