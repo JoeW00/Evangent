@@ -2,9 +2,16 @@ import { HashRouter, Routes, Route, useParams } from "react-router";
 import { useState } from "react";
 import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
+import HeroBanner from "./components/Home/HeroBanner";
+import TableOfContents from "./components/Home/TableOfContents";
 
 function HomePage() {
-  return <div className="p-8 text-center">Home — 目錄 coming soon</div>;
+  return (
+    <>
+      <HeroBanner />
+      <TableOfContents />
+    </>
+  );
 }
 
 function ChapterPage() {
