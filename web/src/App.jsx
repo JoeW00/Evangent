@@ -6,6 +6,7 @@ import { useKeyboardNav } from "./hooks/useKeyboardNav";
 import Header from "./components/Layout/Header";
 import Footer from "./components/Layout/Footer";
 import MobileSidebar from "./components/Layout/MobileSidebar";
+import SearchBar from "./components/Search/SearchBar";
 import HeroBanner from "./components/Home/HeroBanner";
 import TableOfContents from "./components/Home/TableOfContents";
 import ChapterReader from "./components/Reader/ChapterReader";
@@ -38,6 +39,7 @@ function AppShell() {
         onOpenSearch={() => setSearchOpen(true)}
       />
       <MobileSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <SearchBar isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
       <main className="flex-1 flex flex-col">
         <Routes>
           <Route path="/" element={<HomePage />} />
